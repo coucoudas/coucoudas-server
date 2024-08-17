@@ -12,13 +12,15 @@ database_url = os.getenv('DATABASE_URL')
 database_engine = create_engine(
     database_url, 
     pool_size = 10, 
-    echo = True, 
-    connect_args = { "check_same_thread": False }
+    echo = True
 )
 
 Base = declarative_base()
+SessionLocal = sessionmaker(autocommit = False, autoflush = False, bind = database_engine)
 
-def create_database():
+Base.metadata.create_all(bind = database_engine)
+
+def connect_database():
     database = SessionLocal()
     
     try:

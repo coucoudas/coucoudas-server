@@ -1,6 +1,10 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean
 from datetime import datetime
-from database import Base
+from sqlalchemy.ext.declarative import declarative_base
+
+from .database import Base
+
+Base = declarative_base()
 
 class BaseEntity(Base):
     __abstract__ = True   # 해당 클래스가 테이블로 생성되지 않도록 설정
@@ -13,7 +17,7 @@ class Board(BaseEntity):
     __tablename__ = "board"
 
     id = Column(Integer, primary_key = True, autoincrement = True)
-    member_id = Column(Integer, ForeignKey("member.id"))
+    # member_id = Column(Integer, ForeignKey("member.id"))
     title = Column(String(255), nullable = False)
     content = Column(String(1000), nullable = False)
 
