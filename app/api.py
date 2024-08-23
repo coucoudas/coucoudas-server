@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from .dto import CreateBoardRequest
 from .database import connect_database
-from .model import insert_board, find_boards
+from .model import insert_board, find_boards, find_board
 
 app = FastAPI(docs_url='/api/docs', redoc_url='/api/redoc')
 
@@ -26,3 +26,10 @@ def create_board(
 def get_boards(db: Session = Depends(connect_database)):
     results = find_boards(db)
     return { "status": 200, "message": "SUCCESS", "data": results }
+
+# Read Board
+@app.get(path = "/boards/{id}", description = "게시판 상세 조회 API")
+def get_board(id: int, db: Session = Depends(connect_database)):
+    print(f"id: {id}")
+    result = find_board(id, db)
+    return { "status": 200, "message": "SUCCESS", "data": result }

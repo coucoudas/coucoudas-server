@@ -17,3 +17,7 @@ def insert_board(board_request: CreateBoardRequest, db: Session):
 def find_boards(db: Session):
     results = db.query(Board).filter(Board.is_deleted == False).all()
     return results
+
+def find_board(id: int, db: Session):
+    result = db.query(Board).filter(Board.id == id).first()
+    return result
