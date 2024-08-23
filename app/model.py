@@ -35,4 +35,8 @@ def update_board(
     db.commit()
     db.refresh(result)
 
+def delete_board(id: int, db: Session):
+    result = find_board(id, db)
 
+    db.delete(result)
+    db.commit()

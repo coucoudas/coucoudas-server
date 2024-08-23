@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from .dto import CreateBoardRequest, UpdateBoardRequest
 from .database import connect_database
-from .model import insert_board, find_boards, find_board, update_board
+from .model import insert_board, find_boards, find_board, update_board, delete_board
 
 app = FastAPI(docs_url='/api/docs', redoc_url='/api/redoc')
 
@@ -44,3 +44,7 @@ def edit_board(
     return { "status": 200, "message": "SUCCESS" }
 
 # Delete Board
+@app.delete(path = "/boards/{id}", description = "게시판 삭제 API")
+def remove_board(id: int, db: Session = Depends(connect_database)):
+    delete_board(id, db)
+    return { "status": 200, "message": "SUCCESS" }
