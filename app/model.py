@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from .entity import Board
-from .dto import CreateBoardRequest
+from .dto import CreateBoardRequest, UpdateBoardRequest
 
 def insert_board(board_request: CreateBoardRequest, db: Session):
     board = Board(
@@ -21,3 +21,18 @@ def find_boards(db: Session):
 def find_board(id: int, db: Session):
     result = db.query(Board).filter(Board.id == id).first()
     return result
+
+def update_board(
+    id: int,
+    board_request: UpdateBoardRequest,
+    db: Session
+):
+    result = find_board(id, db)
+
+    result.title = board_request.title
+    result.content = board_request.content
+
+    db.commit()
+    db.refresh(result)
+
+
