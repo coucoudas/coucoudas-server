@@ -5,6 +5,7 @@ from src.dto import CreateBoardRequest, UpdateBoardRequest
 from src.database import connect_database
 from src.model import insert_board, find_boards, find_board, update_board, delete_board
 
+
 board_router = APIRouter(
     prefix = "/boards",
     tags = ["board"]
