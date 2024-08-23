@@ -19,7 +19,10 @@ def find_boards(db: Session):
     return results
 
 def find_board(id: int, db: Session):
-    result = db.query(Board).filter(Board.id == id).first()
+    result = db.query(Board).filter(
+        Board.id == id,
+        Board.is_deleted == False
+    ).first()
     return result
 
 def update_board(
@@ -38,5 +41,7 @@ def update_board(
 def delete_board(id: int, db: Session):
     result = find_board(id, db)
 
-    db.delete(result)
+    result.is_deleted = True
+
     db.commit()
+    db.refresh(result)
