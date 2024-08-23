@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.dto import CreateBoardRequest, UpdateBoardRequest
-from app.database import connect_database
-from app.model import insert_board, find_boards, find_board, update_board, delete_board
+from src.dto import CreateBoardRequest, UpdateBoardRequest
+from src.database import connect_database
+from src.model import insert_board, find_boards, find_board, update_board, delete_board
 
 board_router = APIRouter(
     prefix = "/boards",

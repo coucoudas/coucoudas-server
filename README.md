@@ -8,3 +8,8 @@ docker build -t backend .
 ```
 docker run -d -it -p 8000:8000 --rm --name backend backend
 ```
+
+### Local run
+```
+docker-compose up -d --build
+```
