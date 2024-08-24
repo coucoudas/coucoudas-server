@@ -42,8 +42,7 @@ class ChatMessage(BaseEntity):
 
     id = Column(Integer, primary_key = True, autoincrement = True)
     room_id = Column(Integer, ForeignKey("room.id", ondelete="CASCADE"), nullable = False)
-    member_id = Column(Integer, nullable = False)
+    sender_id = Column(Integer, nullable = False)
     content = Column(String(255), nullable = False)
-
 
 Base.metadata.create_all(bind = database_engine)

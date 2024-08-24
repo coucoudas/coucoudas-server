@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from src.service import ChatService
 from src.entity import Room
-from src.dto import room_create, room_create_list
+from src.dto import chat_message_create, room_create, room_create_list
 from src.database import connect_database
 
 chat_router = APIRouter(
@@ -68,3 +68,37 @@ def room_list(user_id: int):
         }
     )
 
+@chat_router.post("/room/chat")
+def chat_message(chat: chat_message_create):
+    if ChatService.create_chat_message(chat) == False:
+        return JSONResponse(
+            status_code = 400,
+            content = {
+                "message": "fail"
+            }
+        )
+    return {"message": "success"}
+
+@chat_router.get("/room/chat/{room_id}")
+def chat_message_list(room_id: int):
+    chat_messages = ChatService.get_chat_message_list(room_id)
+
+    return JSONResponse(
+        status_code = 200,
+        content = {
+            "message": "success",
+         
+            "results": [chat.to_dict() for chat in chat_messages]
+        }
+    )
+
+@chat_router.delete("/room/chat/{room_id}")
+def delete_chat_message(room_id: int):
+    ChatService.delete_chat_message(room_id)
+
+    return JSONResponse(
+        status_code = 201,
+        content = {
+            "message": "success"
+        }
+    )

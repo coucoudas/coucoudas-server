@@ -42,6 +42,7 @@ class room_data(BaseModel):
     sender_id: int
     receiver_id: int
     updated_at: datetime
+    isaccepted: bool
     item_id: int
 
     def to_dict(self):
@@ -51,5 +52,27 @@ class room_data(BaseModel):
             "sender_id": self.sender_id,
             "receiver_id": self.receiver_id,
             "updated_at": self.updated_at.isoformat() if isinstance(self.updated_at, datetime) else self.updated_at,
+            "isaccepted": self.isaccepted,
             "item_id": self.item_id
+        }
+    
+class chat_message_create(BaseModel):
+    room_id: int
+    sender_id: int
+    content: str
+
+class chat_message_data(BaseModel):
+    id: int
+    room_id: int
+    sender_id: int
+    content: str
+    created_at: datetime
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "room_id": self.room_id,
+            "member_id": self.sender_id,
+            "content": self.content,
+            "created_at_at": self.created_at.isoformat() if isinstance(self.created_at, datetime) else self.created_at
         }

@@ -85,6 +85,7 @@ class ChatService:
             sender_id = room.sender_id,
             item_id = room.item_id,
             receiver_id = room.receiver_id,
+            isaccepted = room.isaccepted,
             updated_at = room.updated_at
         )
 
@@ -120,4 +121,51 @@ class ChatService:
             rooms = database.query(Room).filter(or_(Room.sender_id == id, Room.receiver_id == id)).all()
             return [ChatService.to_room_data(room) for room in rooms]
         
+    def find_by_room_id(room_id: int):
+        with connect_database() as database:
+            room = database.query(Room).filter(Room.id == room_id).first()
+            return ChatService.to_room_data(room)
+        
+
+    def to_chat_message_data(chat_message: ChatMessage):
+        return chat_message_data(
+            id = chat_message.id,
+            room_id = chat_message.room_id,
+            sender_id = chat_message.sender_id,
+            content = chat_message.content,
+            created_at = chat_message.created_at
+        )
+
+    def to_chat_message_db(chat_message_create: chat_message_create):
+        return ChatMessage(
+            room_id = chat_message_create.room_id,
+            sender_id = chat_message_create.sender_id,
+            content = chat_message_create.content
+        )
+
+    def create_chat_message(chat: chat_message_create):
+        with connect_database() as database:
+            if ChatService.find_by_room_id(chat.room_id).isaccepted == False:
+                return False
+            chat_message = ChatMessage(
+                room_id = chat.room_id,
+                sender_id = chat.sender_id,
+                content = chat.content
+            )
+            database.add(chat_message)
+            database.commit()
+            database.refresh(chat_message)
+        return True
     
+    def get_chat_message_list(room_id: int):
+        with connect_database() as database:
+            chat_messages = database.query(ChatMessage).filter(ChatMessage.room_id == room_id).all()
+            return [ChatService.to_chat_message_data(chat_message) for chat_message in chat_messages]
+        
+
+    def delete_chat_message(room_id: int):
+        with connect_database() as database:
+            chat_messages = database.query(Room).filter(Room.id == room_id).first()
+            database.delete(chat_messages)
+            database.commit()
+        return True
