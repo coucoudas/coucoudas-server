@@ -11,7 +11,7 @@ board_router = APIRouter(
 )
 
 # Create Board
-@board_router.post(path = "/", description = "게시판 생성 API")
+@board_router.post(path = "", description = "게시판 생성 API")
 def create_board(
     board_request: CreateBoardRequest, 
     db: Session = Depends(connect_database)
@@ -20,7 +20,7 @@ def create_board(
     return { "status": 201, "message": f"/boards/{result}"}
 
 # Read Board List
-@board_router.get(path = "/", description = "게시판 전체 조회 API")
+@board_router.get(path = "", description = "게시판 전체 조회 API")
 def get_boards(db: Session = Depends(connect_database)):
     results = find_boards(db)
     return { "status": 200, "message": "SUCCESS", "data": results }
