@@ -21,7 +21,7 @@ jobs:
           touch ./.env
           touch ./src/.env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> ./.env
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> ./app/.env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> ./src/.env
           
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
