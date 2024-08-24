@@ -134,7 +134,7 @@ class ChatService:
             room.like = True
 
             db.commit()
-            db.refresh(result)
+            db.refresh(room)
         
     def add_dislike(room_id: int):
         with connect_database() as database:
@@ -145,7 +145,7 @@ class ChatService:
             room.dislike = True
 
             db.commit()
-            db.refresh(result)
+            db.refresh(room)
 
     def find_recommand_counts(user_id: int):
         with connect_database() as database:
