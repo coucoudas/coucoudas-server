@@ -2,7 +2,7 @@ from .entity import *
 from .database import connect_database
 from .dto import *
 
-from sqlalchemy import or_, func
+from sqlalchemy import desc, or_, func
 
 class MemberService:
     def to_member_db(member_create: member_create):
@@ -127,25 +127,25 @@ class ChatService:
 
     def add_like(room_id: int):
         with connect_database() as database:
-            room = db.query(Room).filter(
+            room = database.query(Room).filter(
                 Room.id == room_id,
             ).first()
 
             room.like = True
 
-            db.commit()
-            db.refresh(result)
+            database.commit()
+            database.refresh(room)
         
     def add_dislike(room_id: int):
         with connect_database() as database:
-            room = db.query(Room).filter(
+            room = database.query(Room).filter(
                 Room.id == room_id,
             ).first()
 
             room.dislike = True
 
-            db.commit()
-            db.refresh(result)
+            database.commit()
+            database.refresh(room)
 
     def find_recommand_counts(user_id: int):
         with connect_database() as database:
@@ -203,3 +203,30 @@ class ChatService:
             database.delete(chat_messages)
             database.commit()
         return True
+    
+    def get_last_messages_for_user(user_id: int):
+        # 유저가 참여한 모든 방을 가져옵니다.
+        with connect_database() as database:
+            rooms = database.query(Room).filter(
+                (Room.sender_id == user_id) | (Room.receiver_id == user_id)
+            ).all()
+
+            room_messages = []
+
+            for room in rooms:
+                # 각 방에서 가장 마지막 채팅 내역을 가져옵니다.
+                last_message = database.query(ChatMessage).filter(
+                    ChatMessage.room_id == room.id
+                ).order_by(desc(ChatMessage.created_at)).first()
+
+                room_info = {
+                    "room_id": room.id,
+                    "title": room.title,
+                    "sender_id": room.sender_id,
+                    "receiver_id": room.receiver_id,
+                    "content": last_message.content if last_message else None
+                }
+
+                room_messages.append(room_info)
+
+            return room_messages

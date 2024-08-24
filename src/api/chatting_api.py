@@ -1,3 +1,4 @@
+import random
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
@@ -14,7 +15,11 @@ chat_router = APIRouter(
 
 @chat_router.post("/rooms")
 def create_room(room: room_create_list):
-    receiver_id = room.receiver_id_list
+    receiver_id_list = room.receiver_id_list
+    if len(receiver_id_list) > 3:
+        receiver_id = random.sample(receiver_id_list, 3)
+    else:
+        receiver_id = receiver_id_list
     created_room = []
 
     for receiver in receiver_id:
@@ -100,7 +105,9 @@ def delete_chat_message(room_id: int):
         status_code = 201,
         content = {
             "message": "success"
+
         }
+    )
 # 리뷰어에 대한 추천
 @chat_router.put("/rooms/like/{room_id}")
 def like_room_reviewer(room_id: int):
@@ -137,3 +144,17 @@ def get_recommand_counts(user_id: int):
             "results": result
         }
     )
+
+@chat_router.get("/rooms/list")
+def get_room_list(user_id: int):
+    rooms = ChatService.get_last_messages_for_user(user_id)
+    print(rooms)
+    return JSONResponse(
+        status_code = 200,
+        content = {
+            "message": "success",
+            "results": rooms
+        }
+    )
+
+#accept되지 않은 경우 대화 불가능 하게 막을 것
