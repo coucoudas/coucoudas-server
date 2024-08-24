@@ -221,7 +221,6 @@ class ChatService:
 
                 room_info = {
                     "room_id": room.id,
-                    "title": room.title,
                     "sender_id": room.sender_id,
                     "receiver_id": room.receiver_id,
                     "content": last_message.content if last_message else None
