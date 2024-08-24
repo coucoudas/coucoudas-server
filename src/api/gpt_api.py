@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from src.database import connect_database
 
-chat_router = APIRouter(
-    prefix = "/chat",
-    tags = ["chatting"]
+gpt_router = APIRouter(
+    prefix = "/gpt",
+    tags = ["GPT"]
 )
