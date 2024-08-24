@@ -101,6 +101,8 @@ def delete_chat_message(room_id: int):
         content = {
             "message": "success"
         }
+    )
+    
 # 리뷰어에 대한 추천
 @chat_router.put("/rooms/like/{room_id}")
 def like_room_reviewer(room_id: int):
