@@ -25,6 +25,31 @@ class Member(BaseEntity):
     email = Column(String(255), nullable = False, unique = True)
     password = Column(String(255), nullable = False)
     name = Column(String(255), nullable = False)
+    point = Column(Integer, default = 0)
+
+class Room(BaseEntity):
+    __tablename__ = "room"
+    __abstract__ = False
+
+    id = Column(Integer, primary_key = True, autoincrement = True)
+    title = Column(String(255), nullable = False)
+
+class RoomMember(BaseEntity):
+    __tablename__ = "room_member"
+    __abstract__ = False
+
+    id = Column(Integer, primary_key = True, autoincrement = True)
+    room_id = Column(Integer, nullable = False)
+    member_id = Column(Integer, nullable = False)
+
+class ChatMessage(BaseEntity):
+    __tablename__ = "room_chat_message"
+    __abstract__ = False
+
+    id = Column(Integer, primary_key = True, autoincrement = True)
+    room_id = Column(Integer, nullable = False)
+    member_id = Column(Integer, nullable = False)
+    content = Column(String(255), nullable = False)
 
 class Room(BaseEntity):
     __tablename__ = "room"
