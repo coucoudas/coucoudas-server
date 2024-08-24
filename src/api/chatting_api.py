@@ -44,7 +44,7 @@ def deny_chat_request(room_id: int):
     pass
 
 # 수락 시 나머지 채팅방 확인 후 삭제
-@chat_router.put("/rooms/")
+@chat_router.put("/rooms")
 def accept_room(room_id: int):
     ChatService.accept_room(room_id)
 
@@ -100,5 +100,40 @@ def delete_chat_message(room_id: int):
         status_code = 201,
         content = {
             "message": "success"
+        }
+# 리뷰어에 대한 추천
+@chat_router.put("/rooms/like/{room_id}")
+def like_room_reviewer(room_id: int):
+    ChatService.add_like(room_id)
+
+    return JSONResponse(
+        status_code = 200, 
+        content = {
+            "message": "success"
+        }
+    )
+
+# 리뷰어에 대한 비추천
+@chat_router.put("/rooms/dislike/{room_id}")
+def dislike_room_reviewer(room_id: int):
+    ChatService.add_dislike(room_id)
+
+    return JSONResponse(
+        status_code = 200, 
+        content = {
+            "message": "success"
+        }
+    )
+
+# 해당 유저의 추천 개수 반환
+@chat_router.get("/rooms/recommandations/{user_id}")
+def get_recommand_counts(user_id: int):
+    result = ChatService.find_recommand_counts(user_id)
+
+    return JSONResponse(
+        status_code = 200, 
+        content = {
+            "message": "success",
+            "results": result
         }
     )

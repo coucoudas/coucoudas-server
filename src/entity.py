@@ -34,6 +34,8 @@ class Room(BaseEntity):
     item_id = Column(Integer, nullable = False)
     isaccepted = Column(Boolean, default = False)
     pair = Column(JSON, nullable = True)
+    like = Column(Boolean, default = False)
+    dislike = Column(Boolean, default = False)
     room_chat_message = relationship("ChatMessage", cascade="all, delete")
 
 class ChatMessage(BaseEntity):

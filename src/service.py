@@ -1,7 +1,8 @@
 from .entity import *
 from .database import connect_database
 from .dto import *
-from sqlalchemy import or_
+
+from sqlalchemy import or_, func
 
 class MemberService:
     def to_member_db(member_create: member_create):
@@ -75,7 +76,6 @@ class ChatService:
             sender_id = room_create.sender_id,
             receiver_id = room_create.receiver_id,
             item_id = room_create.item_id
-
         )
     
     def to_room_data(room: Room):
@@ -95,6 +95,7 @@ class ChatService:
             database.add(room)
             database.commit()
             database.refresh(room)
+
         return room.id
     
     def accept_room(room_id: int):
@@ -106,20 +107,53 @@ class ChatService:
             pair = set(room.pair)
             pair.remove(room_id)
             pair = list(pair)
+
             for pair_id in pair:
                 database.delete(database.query(Room).filter(Room.id == pair_id).first())
+
             database.commit()
 
     def setpair(room_id, pair_room_id_list: List[int]):
         with connect_database() as database:
             room = database.query(Room).filter(Room.id == room_id).first()
             room.pair = pair_room_id_list
+
             database.commit()
 
     def get_room_list(id: int):
         with connect_database() as database:
             rooms = database.query(Room).filter(or_(Room.sender_id == id, Room.receiver_id == id)).all()
             return [ChatService.to_room_data(room) for room in rooms]
+
+    def add_like(room_id: int):
+        with connect_database() as database:
+            room = db.query(Room).filter(
+                Room.id == room_id,
+            ).first()
+
+            room.like = True
+
+            db.commit()
+            db.refresh(result)
+        
+    def add_dislike(room_id: int):
+        with connect_database() as database:
+            room = db.query(Room).filter(
+                Room.id == room_id,
+            ).first()
+
+            room.dislike = True
+
+            db.commit()
+            db.refresh(result)
+
+    def find_recommand_counts(user_id: int):
+        with connect_database() as database:
+            result = database.query(func.sum(Room.like)).filter(
+                Room.receiver_id == user_id,
+                Room.is_deleted == False,
+                Room.like == True
+            ).scalar()
         
     def find_by_room_id(room_id: int):
         with connect_database() as database:
