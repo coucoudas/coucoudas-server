@@ -1,5 +1,6 @@
 from fastapi import FastAPI, WebSocket
-from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
+# from fastapi.responses import HTMLResponse
 
 from src.api.chatting_api import chat_router
 from src.api.product_api import product_router
@@ -9,6 +10,19 @@ app = FastAPI(
     docs_url="/api/docs", 
     openapi_url="/api/openapi.json",
     redoc_url=None
+)
+
+origins = [
+    "http://localhost:5173",
+    "http://localhost"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(chat_router, prefix = "/api")
