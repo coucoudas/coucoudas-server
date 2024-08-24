@@ -1,6 +1,7 @@
-from sqlalchemy import TEXT, Column, Integer, String, DateTime, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean
 from datetime import datetime
-from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
+
 from .database import Base, database_engine
 
 class BaseEntity(Base):
@@ -12,6 +13,7 @@ class BaseEntity(Base):
 
 class Board(BaseEntity):
     __tablename__ = "board"
+    __abstract__ = False
 
     id = Column(Integer, primary_key = True, autoincrement = True)
     # member_id = Column(Integer, ForeignKey("member.id"))
@@ -20,6 +22,7 @@ class Board(BaseEntity):
 
 class Member(BaseEntity):
     __tablename__ = "member"
+    __abstract__ = False
 
     id = Column(Integer, primary_key = True, autoincrement = True)
     email = Column(String(255), nullable = False, unique = True)
@@ -50,30 +53,5 @@ class ChatMessage(BaseEntity):
     room_id = Column(Integer, nullable = False)
     member_id = Column(Integer, nullable = False)
     content = Column(String(255), nullable = False)
-
-class Room(BaseEntity):
-    __tablename__ = "room"
-
-    id = Column(Integer, primary_key = True, autoincrement = True)
-    topic = Column(TEXT, nullable = False)
-
-class RoomUser(BaseEntity):
-    __tablename__ = "room_user"
-
-    id = Column(Integer, primary_key = True, autoincrement = True)
-    room_id = Column(Integer, ForeignKey("room.id"), nullable = False)
-    user_id = Column(Integer, ForeignKey("user.id"), nullable = False)
-    room = relationship("Room", back_populates="users")
-    user = relationship("User", back_populates="rooms")
-
-class RoomUserChat(BaseEntity):
-    __tablename__ = "room_user_chat"
-
-    id = Column(Integer, primary_key = True, autoincrement = True)
-    room_id = Column(Integer, ForeignKey("room.id"), nullable = False)
-    user_id = Column(Integer, ForeignKey("user.id"), nullable = False)
-    chat = Column(TEXT, nullable = False)
-    room = relationship("Room", back_populates="chats")
-    user = relationship("User", back_populates="chats")
 
 Base.metadata.create_all(bind = database_engine)
