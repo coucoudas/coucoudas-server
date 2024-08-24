@@ -32,7 +32,7 @@ class Room(BaseEntity):
     sender_id = Column(Integer, nullable = False)
     receiver_id = Column(Integer, nullable = False)
     item_id = Column(Integer, nullable = False)
-    isaccepted = Column(Boolean, default = False)
+    isaccepted = Column(Boolean)
     pair = Column(JSON, nullable = True)
     love = Column(Boolean, default = False)
     dislike = Column(Boolean, default = False)
