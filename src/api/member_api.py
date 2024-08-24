@@ -11,44 +11,52 @@ member_router = APIRouter(
     tags = ["member"]
 )
 
-@member_router.post("/create")
+@member_router.post("")
 def create_member(request: Request, member_create: member_create):
     member = MemberService.create_member(member_create)
-    return JSONResponse(status_code = 200, content = {"message": "success"})
+    return JSONResponse(
+        status_code = 201, 
+        content = {
+            "message": "created"
+        }
+    )
 
-@member_router.get("/find/{id}")
+@member_router.get("/{id}")
 def find_member_by_id(request: Request, id: int):
     member = MemberService.find_member_by_id(id)
     member = MemberService.to_dict(member)
-    return JSONResponse(status_code = 200, content = member)
+    return JSONResponse(
+        status_code = 200, 
+        content = {
+            "message": "success",
+            "results": member
+        }
+    )
 
-@member_router.get("/get/isreviewer/{id}")
-def get_isreviewer(id: int):
+@member_router.get("/reviewers/{id}")
+def get_is_reviewer(id: int):
     member = MemberService.find_member_by_id(id)
-    return JSONResponse(status_code = 200, content = {"isreviewer": member.isreviewer})
+    return JSONResponse(
+        status_code = 200, 
+        content = {
+            "message": "success",
+            "results": member.isreviewer
+        }
+    )
 
-@member_router.get("/switch/isreviewer/{id}")
+@member_router.put("/reviewers/{id}")
 def switch_isreviewer(id: int):
     if MemberService.switch_isreviewer(id):
-        return JSONResponse(status_code = 200, content = {"message": "success"})
+        return JSONResponse(
+            status_code = 200, 
+            content = {
+                "message": "success"
+            }
+        )
     else:
-        return JSONResponse(status_code = 400, content = {"message": "fail"})
-    
-@member_router.get("/get/point/{id}")
-def get_point(id: int):
-    member = MemberService.find_member_by_id(id)
-    return JSONResponse(status_code = 200, content = {"point": member.point})
-
-@member_router.get("/point_plus")
-def point_plus(id: int, amount: int=0):
-    if MemberService.point_plus(id, amount):
-        return JSONResponse(status_code = 200, content = {"message": "success"})
-    else:
-        return JSONResponse(status_code = 400, content = {"message": "fail"})
-    
-@member_router.get("/point_minus")
-def point_minus(id: int, amount: int=0):
-    if MemberService.point_minus(id, amount):
-        return JSONResponse(status_code = 200, content = {"message": "success"})
-    else:
-        return JSONResponse(status_code = 400, content = {"message": "fail"})
+        return JSONResponse(
+            status_code = 404, 
+            content = {
+                "message": "not found"
+            }
+        )
