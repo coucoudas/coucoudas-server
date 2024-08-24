@@ -8,8 +8,8 @@ class BaseEntity(Base):
     __abstract__ = True   # 해당 클래스가 테이블로 생성되지 않도록 설정
 
     is_deleted = Column(Boolean, default = False)
-    created_at = Column(DateTime, default = datetime.utcnow)
-    updated_at = Column(DateTime, default = datetime.utcnow, onupdate = datetime.utcnow)
+    created_at = Column(DateTime, default = datetime.now)
+    updated_at = Column(DateTime, default = datetime.now, onupdate = datetime.now)
 
 class Board(BaseEntity):
     __tablename__ = "board"
