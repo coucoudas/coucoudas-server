@@ -22,6 +22,8 @@ jobs:
           touch ./src/.env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> ./.env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> ./src/.env
+          echo "GPT_API=${{ secrets.GPT_APT }}" >> ./.env
+          echo "GPT_API=${{ secrets.GPT_APT }}" >> ./src/.env
           
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3

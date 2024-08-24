@@ -39,8 +39,6 @@ def accept_room(room_id: int):
 @chat_router.get("/room/list/{id}")
 def room_list(id: int):
     room_list = ChatService.get_room_list(id)
-    print(room_list)
-    print("\n\n\n\n\n\n")
     room_list = [room.to_dict() for room in room_list]
-    print(room_list[0])
     return JSONResponse(status_code = 200, content = room_list)
+
