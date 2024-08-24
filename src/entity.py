@@ -11,15 +11,6 @@ class BaseEntity(Base):
     created_at = Column(DateTime, default = datetime.now)
     updated_at = Column(DateTime, default = datetime.now, onupdate = datetime.now)
 
-class Board(BaseEntity):
-    __tablename__ = "board"
-    __abstract__ = False
-
-    id = Column(Integer, primary_key = True, autoincrement = True)
-    # member_id = Column(Integer, ForeignKey("member.id"))
-    title = Column(String(255), nullable = False)
-    content = Column(String(1000), nullable = False)
-
 class Member(BaseEntity):
     __tablename__ = "member"
     __abstract__ = False

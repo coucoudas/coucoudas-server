@@ -1,7 +1,6 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import HTMLResponse
 
-from src.api.board_api import board_router
 from src.api.chatting_api import chat_router
 from src.api.product_api import product_router
 from src.api.gpt_api import gpt_router
@@ -12,7 +11,6 @@ app = FastAPI(
     redoc_url=None
 )
 
-app.include_router(board_router, prefix = "/api")
 app.include_router(chat_router, prefix = "/api")
 app.include_router(product_router, prefix = "/api")
 app.include_router(gpt_router, prefix = "/api")
