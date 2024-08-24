@@ -1,6 +1,7 @@
 from .entity import *
 from .database import connect_database
 from .dto import *
+from .gpt_ai import detect_private_information
 
 from sqlalchemy import desc, or_, func
 
@@ -182,10 +183,12 @@ class ChatService:
             room = ChatService.find_by_room_id(chat.room_id).isaccepted
             if room and room == False:
                 return False
+
+            gpt_content = detect_private_information(chat.content)
             chat_message = ChatMessage(
                 room_id = chat.room_id,
                 sender_id = chat.sender_id,
-                content = chat.content
+                content = gpt_content
             )
             database.add(chat_message)
             database.commit()
