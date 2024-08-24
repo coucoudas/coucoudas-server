@@ -6,3 +6,4 @@ pydantic
 PyMySQL
 cryptography
 boto3
+websocket
