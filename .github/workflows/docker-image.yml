@@ -19,7 +19,7 @@ jobs:
       - name: Touch .env
         run: |
           touch ./.env
-          touch ./app/.env
+          touch ./src/.env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> ./.env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> ./app/.env
           
