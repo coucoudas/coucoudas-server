@@ -58,6 +58,6 @@ html = """
 </html>
 """
 
-@app.get(path = "/")
+@app.get(path = "/api")
 async def get():
     return HTMLResponse(html)
