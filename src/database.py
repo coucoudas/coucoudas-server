@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -17,7 +18,7 @@ database_engine = create_engine(
 
 Base = declarative_base()
 SessionLocal = sessionmaker(autocommit = False, autoflush = False, bind = database_engine)
-
+@contextmanager
 def connect_database():
     database = SessionLocal()
     
