@@ -28,6 +28,7 @@ class Member(BaseEntity):
     email = Column(String(255), nullable = False, unique = True)
     password = Column(String(255), nullable = False)
     name = Column(String(255), nullable = False)
+    point = Column(Integer, default = 0)
 
 class Room(BaseEntity):
     __tablename__ = "room"
