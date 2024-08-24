@@ -68,7 +68,7 @@ def room_list(user_id: int):
         }
     )
 
-@chat_router.post("/room/chat")
+@chat_router.post("/rooms/chat")
 def chat_message(chat: chat_message_create):
     if ChatService.create_chat_message(chat) == False:
         return JSONResponse(
@@ -79,7 +79,7 @@ def chat_message(chat: chat_message_create):
         )
     return {"message": "success"}
 
-@chat_router.get("/room/chat/{room_id}")
+@chat_router.get("/rooms/chat/{room_id}")
 def chat_message_list(room_id: int):
     chat_messages = ChatService.get_chat_message_list(room_id)
 
@@ -87,12 +87,11 @@ def chat_message_list(room_id: int):
         status_code = 200,
         content = {
             "message": "success",
-         
             "results": [chat.to_dict() for chat in chat_messages]
         }
     )
 
-@chat_router.delete("/room/chat/{room_id}")
+@chat_router.delete("/rooms/chat/{room_id}")
 def delete_chat_message(room_id: int):
     ChatService.delete_chat_message(room_id)
 
