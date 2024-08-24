@@ -179,7 +179,8 @@ class ChatService:
 
     def create_chat_message(chat: chat_message_create):
         with connect_database() as database:
-            if ChatService.find_by_room_id(chat.room_id).isaccepted == False:
+            room = ChatService.find_by_room_id(chat.room_id).isaccepted
+            if room and room == False:
                 return False
             chat_message = ChatMessage(
                 room_id = chat.room_id,

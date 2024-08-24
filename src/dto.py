@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
 
 class CreateBoardRequest(BaseModel):
@@ -42,7 +42,7 @@ class room_data(BaseModel):
     sender_id: int
     receiver_id: int
     updated_at: datetime
-    isaccepted: bool
+    isaccepted: Optional[bool]
     item_id: int
 
     def to_dict(self):
