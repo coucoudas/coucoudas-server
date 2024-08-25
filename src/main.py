@@ -14,7 +14,8 @@ app = FastAPI(
 
 origins = [
     "http://localhost:5173",
-    "http://localhost"
+    "http://localhost",
+    "https://couni.store"
 ]
 
 app.add_middleware(
