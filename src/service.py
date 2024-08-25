@@ -179,7 +179,7 @@ class ChatService:
         )
 
     def create_chat_message(chat: chat_message_create):
-        gpt_content = detect_private_information(chat.content)
+        #gpt_content = detect_private_information(chat.content)
         
         with connect_database() as database:
             room = ChatService.find_by_room_id(chat.room_id).isaccepted
@@ -189,7 +189,7 @@ class ChatService:
             chat_message = ChatMessage(
                 room_id = chat.room_id,
                 sender_id = chat.sender_id,
-                content = gpt_content
+                content = chat.content
             )
             database.add(chat_message)
             database.commit()
